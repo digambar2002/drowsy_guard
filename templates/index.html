@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="{{url_for('static', filename='script/three.js')}}"></script>
+
+    <style>
+        .road {
+            position: absolute;
+            left: 72%;
+            top: 28%;
+        }
+
+        .road:nth-child(1) {
+            position: absolute;
+            left: 72%;
+            top: 25%;
+        }
+
+        .road:nth-child(2) {
+            position: absolute;
+            left: 74%;
+            top: 20%;
+        }
+
+        .road:nth-child(3) {
+            position: absolute;
+            left: 92%;
+            top: 20%;
+        }
+
+        .road:nth-child(4) {
+            position: absolute;
+            left: 94%;
+            top: 25%;
+        }
+
+        .road span {
+            animation: animate .5s linear infinite;
+            position: absolute;
+
+        }
+
+        .road span::before {
+            content: '';
+            top: 30%;
+            left: 80%;
+            position: absolute;
+            width: 1px;
+            height: 200px;
+            background: linear-gradient(360deg, #fff, transparent);
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(300px);
+            }
+        }
+
+        #StopAlert {
+            animation: flashAlertanimate 1s linear infinite;
+        }
+
+        @keyframes flashAlertanimate {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+
+    </style>
+</head>
+
+<body style="background-color: #030610;">
+
+    <div class="flex h-screen">
+        <!-- Nav bar -->
+        <div class="flex flex-row h-full">
+            <nav class="sm:hidden lg:flex flex-col justify-between w-20 h-screen bg-white dark:bg-indigo-950 "
+                style="background-color: #0c1016;">
+                <div class="mt-10 mb-10">
+                    <a href="#">
+                        <img src="https://img.freepik.com/free-vector/mysterious-mafia-man-smoking-cigarette_52683-34828.jpg?size=626&ext=jpg"
+                            class="w-10 h-10 mx-auto mb-3 rounded-full" />
+                    </a>
+                    <div class="mt-10">
+                        <ul>
+                            <li class="my-12 text-center">
+                                <a href="#">
+                                    <span
+                                        class="h-6 w-6 text-gray-500 dark:text-gray-300 mx-auto hover:text-gray-800 dark:hover:text-white transition-colors duration-200">
+                                        <svg width="20" height="20" fill="currentColor" class="m-auto"
+                                            viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1024 1131q0-64-9-117.5t-29.5-103-60.5-78-97-28.5q-6 4-30 18t-37.5 21.5-35.5 17.5-43 14.5-42 4.5-42-4.5-43-14.5-35.5-17.5-37.5-21.5-30-18q-57 0-97 28.5t-60.5 78-29.5 103-9 117.5 37 106.5 91 42.5h512q54 0 91-42.5t37-106.5zm-157-520q0-94-66.5-160.5t-160.5-66.5-160.5 66.5-66.5 160.5 66.5 160.5 160.5 66.5 160.5-66.5 66.5-160.5zm925 509v-64q0-14-9-23t-23-9h-576q-14 0-23 9t-9 23v64q0 14 9 23t23 9h576q14 0 23-9t9-23zm0-260v-56q0-15-10.5-25.5t-25.5-10.5h-568q-15 0-25.5 10.5t-10.5 25.5v56q0 15 10.5 25.5t25.5 10.5h568q15 0 25.5-10.5t10.5-25.5zm0-252v-64q0-14-9-23t-23-9h-576q-14 0-23 9t-9 23v64q0 14 9 23t23 9h576q14 0 23-9t9-23zm256-320v1216q0 66-47 113t-113 47h-352v-96q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v96h-768v-96q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v96h-352q-66 0-113-47t-47-113v-1216q0-66 47-113t113-47h1728q66 0 113 47t47 113z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="my-12 text-center">
+                                <a href="#">
+                                    <span
+                                        class="h-6 w-6 text-gray-500 dark:text-gray-300 mx-auto hover:text-gray-800 dark:hover:text-white transition-colors duration-200">
+                                        <svg width="20" height="20" fill="currentColor" class="m-auto"
+                                            viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M685 483q16 0 27.5-11.5t11.5-27.5-11.5-27.5-27.5-11.5-27 11.5-11 27.5 11 27.5 27 11.5zm422 0q16 0 27-11.5t11-27.5-11-27.5-27-11.5-27.5 11.5-11.5 27.5 11.5 27.5 27.5 11.5zm-812 184q42 0 72 30t30 72v430q0 43-29.5 73t-72.5 30-73-30-30-73v-430q0-42 30-72t73-30zm1060 19v666q0 46-32 78t-77 32h-75v227q0 43-30 73t-73 30-73-30-30-73v-227h-138v227q0 43-30 73t-73 30q-42 0-72-30t-30-73l-1-227h-74q-46 0-78-32t-32-78v-666h918zm-232-405q107 55 171 153.5t64 215.5h-925q0-117 64-215.5t172-153.5l-71-131q-7-13 5-20 13-6 20 6l72 132q95-42 201-42t201 42l72-132q7-12 20-6 12 7 5 20zm477 488v430q0 43-30 73t-73 30q-42 0-72-30t-30-73v-430q0-43 30-72.5t72-29.5q43 0 73 29.5t30 72.5z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="my-12 text-center">
+                                <a href="#">
+                                    <span
+                                        class="h-6 w-6 text-gray-500 dark:text-gray-300 mx-auto hover:text-gray-800 dark:hover:text-white transition-colors duration-200">
+                                        <svg width="20" height="20" fill="currentColor" class="m-auto"
+                                            viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M960 0l960 384v128h-128q0 26-20.5 45t-48.5 19h-1526q-28 0-48.5-19t-20.5-45h-128v-128zm-704 640h256v768h128v-768h256v768h128v-768h256v768h128v-768h256v768h59q28 0 48.5 19t20.5 45v64h-1664v-64q0-26 20.5-45t48.5-19h59v-768zm1595 960q28 0 48.5 19t20.5 45v128h-1920v-128q0-26 20.5-45t48.5-19h1782z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="my-12 text-center">
+                                <a href="#">
+                                    <span
+                                        class="h-6 w-6 text-gray-500 dark:text-gray-300 mx-auto hover:text-gray-800 dark:hover:text-white transition-colors duration-200">
+                                        <svg width="20" height="20" class="m-auto" fill="currentColor"
+                                            viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1070 1178l306-564h-654l-306 564h654zm722-282q0 182-71 348t-191 286-286 191-348 71-348-71-286-191-191-286-71-348 71-348 191-286 286-191 348-71 348 71 286 191 191 286 71 348z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Nav bar -->
+
+        <div class="text-white container mx-auto px-10 py-8">
+
+            <div class="mb-5">
+                <h1 class="font-semi-bold text-4xl">Home</h1>
+                <div class="flex mt-3">
+                    <p class="text-gray-600">OCT 20 2023</p>
+                    <p class="text-gray-600 mx-10">08:44:20 PM</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+
+                <div class="md:col-span-2">
+                    <div class="rounded-2xl" style="background-color: #0c1016ff; overflow: hidden;">
+                        <div class="flex flex-col md:flex-row ">
+
+                            <div class=" camerasreaming lg:basis-2/1">
+                                <img alt="moto" src="{{ url_for('video_stream') }}"
+                                    class="rounded-2xl lg:w-full lg:h-auto sm:w-1/4" />
+                            </div>
+
+                            <div class="w-full lg:basis-1/4">
+                                <div class="flex flex-col p-4 lg:px-14">
+                                    <div class="my-4 p-4 rounded-2xl" style="background-color: #030610;">
+
+                                        <h5 class="font-semi-bold text-2xl text-center">50 <span
+                                                class="text-sm">min</span>
+                                        </h5>
+                                        <p class="text-center mt-2 text-gray-600">Driving From</p>
+
+                                    </div>
+                                    <div class="my-4 p-4 rounded-2xl" style="background-color: #030610;">
+                                        <h5 class="font-semi-bold text-2xl text-center">60 <span
+                                                class="text-sm">km</span>
+                                        </h5>
+                                        <p class="text-center mt-2 text-gray-600">Distance Cover</p>
+                                    </div>
+
+
+                                    <div class="rounded-2xl mt-12" style="background-color: transparent">
+                                        <div class="flex">
+                                            <button type="button"
+                                                class="py-1 px-4 mx-2 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
+                                                Start
+                                            </button>
+                                            <button type="button"
+                                                class="py-1 px-4 mx-2 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
+                                                Stop
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- <img alt="moto" src="../static/hello.jpg" class="h-8 max-w-full rounded-2xl" /> -->
+                </div>
+
+                <div class="">
+                    <div class="rounded-2xl  flex justify-center items-center h-4/5 "
+                        style="background-color: #0c1016ff; overflow: hidden;">
+                        <div id="AirAnimation" class="">
+                            <div class="h-full road">
+                                <span></span>
+                            </div>
+                            <div class="h-full road">
+                                <span></span>
+                            </div>
+                            <div class="h-full road">
+                                <span></span>
+                            </div>
+                            <div class="h-full road">
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div id="StopAlert" class="bg-red-400 hidden border-t-4 border-red-900 rounded-b text-white-900 px-4 py-3 shadow-md absolute " role="alert">
+                            <div class="flex">
+                              <div class="py-1"><svg class="fill-current h-6 w-6 text-red-900 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
+                              <div>
+                                <p class="font-bold text-2xl">Alert</p>
+                                <p class="text-14">Your Car is Stop, Please take some break</p>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        <div class="" id="container3D">
+                            <!-- <img src="../static/car.png" class="object-contain h-80" alt=""> -->
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- <script type="module" src="three.js"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function () {
+            console.log('Connected to the server.');
+        });
+
+        socket.on('custom_event', function (data) {
+            console.log('Received a custom event:', data);
+
+            if (data == 1) {
+
+                document.getElementById('AirAnimation').classList.add('hidden')
+                document.getElementById('StopAlert').classList.remove('hidden')
+
+            }
+            else{
+                document.getElementById('StopAlert').classList.add('hidden')
+                document.getElementById('AirAnimation').classList.remove('hidden')
+            }
+
+            // Handle the data received from the server
+        });
+    </script>
+
+</body>
+
+</html>

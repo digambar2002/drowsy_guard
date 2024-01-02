@@ -4,24 +4,21 @@ import cv2
 
 from scipy.spatial import distance
 from imutils import face_utils
-from pygame import mixer
 import imutils
 import dlib
 import cv2
-import pyttsx3
 
 
 
 app = Flask(__name__)
-socketio = SocketIO(app)
-camera = cv2.VideoCapture(0)
-mixer.init()
-mixer.music.load("music.wav")
 
-def openEye():
-	engine = pyttsx3.init()
-	engine.say("Please, Open Your Eyes")
-	engine.runAndWait()
+# intialize sockets
+socketio = SocketIO(app)
+
+
+camera = cv2.VideoCapture(0)
+streaming = False
+
 
 def eye_aspect_ratio(eye):
 	A = distance.euclidean(eye[1], eye[5])
@@ -42,7 +39,8 @@ flag=0
 
 def genrate_frame():
     setAlert = False
-    while True:
+    global streaming
+    while streaming:
         success, frame = camera.read()
         if not success:
             break
@@ -66,21 +64,17 @@ def genrate_frame():
                     flag += 1
                     print (flag)
                     if flag >= frame_check:
-                        cv2.putText(frame, "****************ALERT!****************", (10, 30),
+                        cv2.putText(frame, "*************************************************** ALERT! ***************************************************", (20, 30),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                        cv2.putText(frame, "****************ALERT!****************", (10,325),
+                        cv2.putText(frame, "*************************************************** ALERT! ***************************************************", (20,325),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                        openEye()
-                        mixer.music.play()
-                        socketio.emit('custom_event', '1')
-                        print("Message sent to the client.")
+                        socketio.emit('alert_event', '1')
                         setAlert = True
 
                 else:
                     flag = 0
                     if setAlert == True:
-                        socketio.emit('custom_event', '2')
-                        print("Message sent to the client.")
+                        socketio.emit('alert_event', '2')
                         setAlert = False
 
             # cv2.imshow("Frame", frame)
@@ -97,24 +91,37 @@ def genrate_frame():
 
 
 
-           
-
-
-
-        
+               
 
 
 @app.route("/")
 def hello_world():
+    global streaming
+    camera.release() 
+    streaming = False
     return render_template('index.html')
 
 @app.route("/video_stream")
 def video_stream():
     return Response(genrate_frame(), mimetype= 'multipart/x-mixed-replace; boundary=frame')
     
+@app.route('/start_stream')
+def start_stream():
+    
+    global streaming
+    camera.open(0)
+    streaming = True
+    return render_template('index.html')
 
+@app.route('/stop_stream')
+def stop_stream():
+
+    global streaming
+    camera.release() 
+    streaming = False
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='192.168.163.224')
 

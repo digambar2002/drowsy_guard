@@ -7,6 +7,7 @@
     <title>Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="{{url_for('static', filename='script/three.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='script/main.js')}}"></script>
 
     <style>
         .road {
@@ -78,8 +79,6 @@
                 opacity: 1;
             }
         }
-
-
     </style>
 </head>
 
@@ -87,7 +86,7 @@
 
     <div class="flex h-screen">
         <!-- Nav bar -->
-        <div class="flex flex-row h-full">
+        <div class="flex flex-row h-full hidden md:block">
             <nav class="sm:hidden lg:flex flex-col justify-between w-20 h-screen bg-white dark:bg-indigo-950 "
                 style="background-color: #0c1016;">
                 <div class="mt-10 mb-10">
@@ -161,8 +160,8 @@
             <div class="mb-5">
                 <h1 class="font-semi-bold text-4xl">Home</h1>
                 <div class="flex mt-3">
-                    <p class="text-gray-600">OCT 20 2023</p>
-                    <p class="text-gray-600 mx-10">08:44:20 PM</p>
+                    <p id="MainDate" class="text-gray-600">OCT 20 2023</p>
+                    <p id="MainTime" class="text-gray-600 mx-10">08:44:20 PM</p>
                 </div>
             </div>
 
@@ -173,8 +172,9 @@
                         <div class="flex flex-col md:flex-row ">
 
                             <div class=" camerasreaming lg:basis-2/1">
-                                <img alt="moto" src="{{ url_for('video_stream') }}"
-                                    class="rounded-2xl lg:w-full lg:h-auto sm:w-1/4" />
+                                <img id="VideoImage" alt="moto" src="{{ url_for('video_stream') }}"
+                                    class="rounded-2xl lg:w-full lg:h-auto" />
+                                <!-- <img alt="moto" src="../static/hello.jpg" class="rounded-2xl lg:w-full lg:h-auto" /> -->
                             </div>
 
                             <div class="w-full lg:basis-1/4">
@@ -196,15 +196,19 @@
 
 
                                     <div class="rounded-2xl mt-12" style="background-color: transparent">
-                                        <div class="flex">
-                                            <button type="button"
-                                                class="py-1 px-4 mx-2 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
-                                                Start
-                                            </button>
-                                            <button type="button"
-                                                class="py-1 px-4 mx-2 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
-                                                Stop
-                                            </button>
+                                        <div class="flex space-x-4">
+                                            <form action="{{ url_for('start_stream') }}" method="get">
+                                                <button type="submit"
+                                                    class="py-1 px-4 mx-2 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
+                                                    Start
+                                                </button>
+                                            </form>
+                                            <form action="{{ url_for('stop_stream') }}" method="get">
+                                                <button type="submit"
+                                                    class="py-1 px-4 mx-2 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
+                                                    Stop
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
 
@@ -217,7 +221,7 @@
                     <!-- <img alt="moto" src="../static/hello.jpg" class="h-8 max-w-full rounded-2xl" /> -->
                 </div>
 
-                <div class="">
+                <div class="hidden lg:block">
                     <div class="rounded-2xl  flex justify-center items-center h-4/5 "
                         style="background-color: #0c1016ff; overflow: hidden;">
                         <div id="AirAnimation" class="">
@@ -235,15 +239,21 @@
                             </div>
                         </div>
 
-                        <div id="StopAlert" class="bg-red-400 hidden border-t-4 border-red-900 rounded-b text-white-900 px-4 py-3 shadow-md absolute " role="alert">
+                        <div id="StopAlert"
+                            class="bg-red-400 hidden border-t-4 border-red-900 rounded-b text-white-900 px-4 py-3 shadow-md absolute "
+                            role="alert">
                             <div class="flex">
-                              <div class="py-1"><svg class="fill-current h-6 w-6 text-red-900 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
-                              <div>
-                                <p class="font-bold text-2xl">Alert</p>
-                                <p class="text-14">Your Car is Stop, Please take some break</p>
-                              </div>
+                                <div class="py-1"><svg class="fill-current h-6 w-6 text-red-900 mr-4"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path
+                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                    </svg></div>
+                                <div>
+                                    <p class="font-bold text-2xl">Alert</p>
+                                    <p class="text-14">Your Car is Stop, Please take some break</p>
+                                </div>
                             </div>
-                          </div>
+                        </div>
 
 
                         <div class="" id="container3D">
@@ -262,32 +272,8 @@
     </div>
 
     <!-- <script type="module" src="three.js"></script> -->
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
-    <script type="text/javascript">
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-        socket.on('connect', function () {
-            console.log('Connected to the server.');
-        });
-
-        socket.on('custom_event', function (data) {
-            console.log('Received a custom event:', data);
-
-            if (data == 1) {
-
-                document.getElementById('AirAnimation').classList.add('hidden')
-                document.getElementById('StopAlert').classList.remove('hidden')
-
-            }
-            else{
-                document.getElementById('StopAlert').classList.add('hidden')
-                document.getElementById('AirAnimation').classList.remove('hidden')
-            }
-
-            // Handle the data received from the server
-        });
-    </script>
 
 </body>
 

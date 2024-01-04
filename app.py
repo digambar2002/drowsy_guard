@@ -1,5 +1,4 @@
 import base64
-import os
 
 import cv2
 import dlib
@@ -145,5 +144,9 @@ def stop_stream():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=443, host='192.168.1.224', ssl_context=("cert.pem", "key.pem"))
+
+    # only use when test on network device 
+    # app.run(debug=True, port=443, host='your ip address', ssl_context=("cert.pem", "key.pem"))
+
+    app.run(debug=True)
 

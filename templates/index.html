@@ -6,10 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module" src="{{url_for('static', filename='script/three.js')}}"></script>
-    <script type="module" src="{{url_for('static', filename='script/main.js')}}"></script>
+    <script type="module" src="/static/js/three.js"></script>
+    <script type="module" src="/static/js/main.js"></script>
+
 
     <style>
+        /* .car {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        } */
+
+        .highWay {
+            background-image: url('../static/highway.svg');
+            /* Replace 'your-image-url.jpg' with the actual path to your image */
+            background-repeat: no-repeat;
+            height: 100vh;
+            /* Ensures the container covers the entire viewport height */
+            margin: 0;
+            /* Removes default margin */
+            /* overflow: hidden; */
+            /* Hides any overflowing content */
+            position: relative;
+            animation: moveBackground .5s linear infinite;
+            /* Adjust the duration and timing function as needed */
+        }
+
+        @keyframes moveBackground {
+            0% {
+                background-position: center bottom;
+            }
+
+            100% {
+                background-position: center center;
+            }
+        }
+
+
         .road {
             position: absolute;
             left: 72%;
@@ -157,6 +193,7 @@
 
         <div class="text-white container mx-auto px-10 py-8">
 
+            <!-- Date time -->
             <div class="mb-5">
                 <h1 class="font-semi-bold text-4xl">Home</h1>
                 <div class="flex mt-3">
@@ -164,32 +201,53 @@
                     <p id="MainTime" class="text-gray-600 mx-10">08:44:20 PM</p>
                 </div>
             </div>
+            <!-- Date time -->
 
+            <!-- Dashboard -->
             <div class="grid md:grid-cols-3 gap-4">
-
                 <div class="md:col-span-2">
                     <div class="rounded-2xl" style="background-color: #0c1016ff; overflow: hidden;">
                         <div class="flex flex-col md:flex-row ">
 
+                            <!-- Camera streaming -->
                             <div class=" camerasreaming lg:basis-2/1">
-                                <img id="VideoImage" alt="moto" src="{{ url_for('video_stream') }}"
-                                    class="rounded-2xl lg:w-full lg:h-auto" />
-                                <!-- <img alt="moto" src="../static/hello.jpg" class="rounded-2xl lg:w-full lg:h-auto" /> -->
-                            </div>
+                                <video autoplay playsinline id="videoElement" style="display: none;"></video>
+                                <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+                                <div class='video'>
+                                    <img id="photo" class="rounded-2xl lg:w-full lg:h-auto">
+                                </div>
 
+                                <div id="cover" class=" bg-black h-96" style="width: 500px;">
+                                    <div class="flex justify-center">
+                                        <dotlottie-player class="px-4"
+                                            src="https://lottie.host/eecd2f27-6758-4490-bece-d2304bc4884c/laTTPe5mHz.json"
+                                            background="transparent" speed="1" style="width: 350px; height: 350px"
+                                            direction="1" mode="normal" loop autoplay>
+                                        </dotlottie-player>
+                                    </div>
+                                    <h1 class="text-center text-xl text-slate-400">Drowsiness Protection is off</h1>
+                                </div>
+
+                            </div>
+                            <!-- Camera streaming -->
+
+
+                            <!-- Car And Alerts -->
                             <div class="w-full lg:basis-1/4">
                                 <div class="flex flex-col p-4 lg:px-14">
                                     <div class="my-4 p-4 rounded-2xl" style="background-color: #030610;">
 
-                                        <h5 class="font-semi-bold text-2xl text-center">50 <span
-                                                class="text-sm">min</span>
+                                        <h5 class="font-semi-bold text-2xl text-center">
+                                            <span id="DrivingTime">0 : 0</span>
+                                            <span class="text-sm">sec</span>
                                         </h5>
                                         <p class="text-center mt-2 text-gray-600">Driving From</p>
 
                                     </div>
                                     <div class="my-4 p-4 rounded-2xl" style="background-color: #030610;">
-                                        <h5 class="font-semi-bold text-2xl text-center">60 <span
-                                                class="text-sm">km</span>
+                                        <h5 class="font-semi-bold text-2xl text-center">
+                                            <span id="DrivingDistance">0</span>
+                                            <span class="text-sm">km</span>
                                         </h5>
                                         <p class="text-center mt-2 text-gray-600">Distance Cover</p>
                                     </div>
@@ -197,24 +255,24 @@
 
                                     <div class="rounded-2xl mt-12" style="background-color: transparent">
                                         <div class="flex space-x-4">
-                                            <form action="{{ url_for('start_stream') }}" method="get">
-                                                <button type="submit"
-                                                    class="py-1 px-4 mx-2 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
-                                                    Start
-                                                </button>
-                                            </form>
-                                            <form action="{{ url_for('stop_stream') }}" method="get">
-                                                <button type="submit"
-                                                    class="py-1 px-4 mx-2 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
-                                                    Stop
-                                                </button>
-                                            </form>
+
+                                            <button id="StartBtn" type="button"
+                                                class="py-1 px-4 mx-2 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
+                                                Start
+                                            </button>
+
+
+                                            <button id="StopBtn" type="button"
+                                                class="py-1 px-4 mx-2 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 rounded-lg ">
+                                                Stop
+
+                                            </button>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-
+                            <!-- Car And Alerts -->
                         </div>
 
                     </div>
@@ -224,6 +282,7 @@
                 <div class="hidden lg:block">
                     <div class="rounded-2xl  flex justify-center items-center h-4/5 "
                         style="background-color: #0c1016ff; overflow: hidden;">
+
                         <div id="AirAnimation" class="">
                             <div class="h-full road">
                                 <span></span>
@@ -236,6 +295,12 @@
                             </div>
                             <div class="h-full road">
                                 <span></span>
+                            </div>
+                        </div>
+
+                        <div class="highWay" id="HighWay">
+                            <div class="car" id="container3D">
+                                <!-- <img src="../static/car.png" class="object-contain h-80" alt=""> -->
                             </div>
                         </div>
 
@@ -256,10 +321,6 @@
                         </div>
 
 
-                        <div class="" id="container3D">
-                            <!-- <img src="../static/car.png" class="object-contain h-80" alt=""> -->
-                        </div>
-
                     </div>
                 </div>
 
@@ -273,7 +334,8 @@
 
     <!-- <script type="module" src="three.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
 </body>
 

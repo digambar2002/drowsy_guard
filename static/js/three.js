@@ -52,8 +52,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container3D").appendChild(renderer.domElement);
 
 //Set how far the camera will be from the 3D model
-camera.position.z = objToRender === "car" ? 700 : 1000;
-
+// camera.position.z = objToRender === "car" ? 700 : 1000;
+camera.position.y = 800;
 //Add lights to the scene, so we can actually see the 3D model
 const topLight = new THREE.DirectionalLight(0xffffff, 1); // (color, intensity)
 topLight.position.set(500, 500, 500) //top-left-ish

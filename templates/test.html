@@ -16,17 +16,17 @@
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
 
 </head>
 
 <body>
 
     <div id="container">
-        <video autoplay playsinline id="videoElement"></video>
-        <canvas id="canvas" width="400" height="300"></canvas>
+        <video autoplay playsinline id="videoElement" style="display: none;"></video>
+        <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+        <audio src="../alaram.mp3"></audio>
     </div>
-
     <div class='video'>
         <img id="photo" width="400" height="300">
     </div>
@@ -45,7 +45,6 @@
 
         video.width = 400;
         video.height = 300;
-
         if (navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices
                 .getUserMedia({
@@ -71,6 +70,20 @@
         socket.on("processed_image", function (image) {
             photo.setAttribute("src", image);
         });
+
+        socket.on('alert', function (data) {
+            console.log('Received message from server:', data);
+
+            if (data == 1) {
+                audio.play();
+            }
+            else{
+                audio.pause();
+            }
+
+
+        });
+
     </script>
 
 </body>

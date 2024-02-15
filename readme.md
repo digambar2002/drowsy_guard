@@ -14,7 +14,8 @@ The Drowsiness Detection System is a Python-based application aimed at enhancing
 
 1. Clone this repository: `git clone https://github.com/yourusername/drowsiness-detection.git`
 2. Install required dependencies: `pip install -r requirements.txt`
-3. Run the application: `python main.py`
+3. genrate ssl certificate: `"C:\Program Files\Git\usr\bin\openssl.exe" req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 3650 `
+4. Run the application: `python main.py`
 
 ## Usage
 

@@ -124,29 +124,18 @@ def receive_image(image):
     emit("processed_image", processed_img_data)
                
 
-
 @app.route("/")
-def hello_world():
+def start():
     return render_template('index.html')
 
-    
-@app.route('/start_stream')
-def start_stream():
-    
-    
-    return render_template('index.html')
-
-@app.route('/stop_stream')
-def stop_stream():
-
-
-    return render_template('index.html')
-
+@app.route("/android")
+def android_use():
+    return render_template('android.html')
 
 if __name__ == "__main__":
 
     # only use when test on network device 
-    # app.run(debug=True, port=443, host='your ip address', ssl_context=("cert.pem", "key.pem"))
+    app.run(debug=True, port=443, host='192.168.29.224', ssl_context=("cert.pem", "key.pem"))
 
     app.run(debug=True)
 
